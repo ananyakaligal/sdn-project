@@ -1,28 +1,27 @@
 {
-  "name": "sdn-project",
-  "version": "1.0.0",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/ananyakaligal/sdn-project.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/ananyakaligal/sdn-project/issues"
-  },
-  "homepage": "https://github.com/ananyakaligal/sdn-project#readme",
-  "description": "",
-  "devDependencies": {
-    "turbo": "latest"
-  },
+  "name": "snmp-microservices-monorepo",
+  "private": true,
+  "version": "0.1.0",
+  "packageManager": "npm@10",
   "workspaces": [
     "apps/*",
-    "packages/*"
+    "services/*"
   ],
-  "packageManager": "npm@10.5.0"
+  "scripts": {
+    "dev": "concurrently \"npm:dev:client\" \"npm:dev:snmp\"",
+    "dev:client": "npm run dev -w apps/client",
+    "dev:snmp": "npm run dev -w services/snmp-manager",
+    "build": "npm run build -w apps/client && npm run build -w services/snmp-manager",
+    "start": "npm run start -w apps/client & npm run start -w services/snmp-manager",
+    "lint": "eslint .",
+    "format": "prettier --write ."
+  },
+  "devDependencies": {
+    "@types/node": "^20.12.12",
+    "concurrently": "^8.2.2",
+    "eslint": "^9.9.0",
+    "eslint-config-next": "^15.0.0",
+    "prettier": "^3.3.3",
+    "typescript": "^5.5.4"
+  }
 }
