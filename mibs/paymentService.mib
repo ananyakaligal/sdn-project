@@ -1,0 +1,48 @@
+PAYMENT-SERVICE-MIB DEFINITIONS ::= BEGIN
+
+IMPORTS
+    OBJECT-TYPE
+        FROM SNMPv2-SMI
+    Integer32
+        FROM SNMPv2-SMI
+    enterprises
+        FROM SNMPv2-SMI;
+
+paymentService OBJECT IDENTIFIER ::= { enterprises 55558 }
+
+paymentsPerMin OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Payments per minute."
+    ::= { paymentService 1 }
+
+paymentFailureRate OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Payment failure rate percentage."
+    ::= { paymentService 2 }
+
+avgPaymentProcessingMs OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Average payment processing time milliseconds."
+    ::= { paymentService 3 }
+
+activePaymentSessions OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Active payment sessions count."
+    ::= { paymentService 4 }
+
+refundRate OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Refund rate percentage."
+    ::= { paymentService 5 }
+
+END
