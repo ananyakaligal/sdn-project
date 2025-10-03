@@ -79,19 +79,24 @@ jobs:
           echo "Agent test completed"
       
       - name: Push to DockerHub (if credentials available)
-        if: ${{ secrets.DOCKERHUB_USERNAME != '' }}
         run: |
-          docker tag sdn-inventory-agent:latest ${{ secrets.DOCKERHUB_USERNAME }}/sdn-inventory-agent:latest
-          docker tag sdn-orders-agent:latest ${{ secrets.DOCKERHUB_USERNAME }}/sdn-orders-agent:latest
-          docker tag sdn-payments-agent:latest ${{ secrets.DOCKERHUB_USERNAME }}/sdn-payments-agent:latest
-          docker tag sdn-users-agent:latest ${{ secrets.DOCKERHUB_USERNAME }}/sdn-users-agent:latest
-          docker tag sdn-notifications-agent:latest ${{ secrets.DOCKERHUB_USERNAME }}/sdn-notifications-agent:latest
-          
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/sdn-inventory-agent:latest
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/sdn-orders-agent:latest
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/sdn-payments-agent:latest
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/sdn-users-agent:latest
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/sdn-notifications-agent:latest
+          if [ -n "${{ secrets.DOCKERHUB_USERNAME }}" ] && [ -n "${{ secrets.DOCKERHUB_TOKEN }}" ]; then
+            echo "Pushing images to DockerHub..."
+            docker tag sdn-inventory-agent:latest ${{ secrets.DOCKERHUB_USERNAME }}/sdn-inventory-agent:latest
+            docker tag sdn-orders-agent:latest ${{ secrets.DOCKERHUB_USERNAME }}/sdn-orders-agent:latest
+            docker tag sdn-payments-agent:latest ${{ secrets.DOCKERHUB_USERNAME }}/sdn-payments-agent:latest
+            docker tag sdn-users-agent:latest ${{ secrets.DOCKERHUB_USERNAME }}/sdn-users-agent:latest
+            docker tag sdn-notifications-agent:latest ${{ secrets.DOCKERHUB_USERNAME }}/sdn-notifications-agent:latest
+            
+            docker push ${{ secrets.DOCKERHUB_USERNAME }}/sdn-inventory-agent:latest
+            docker push ${{ secrets.DOCKERHUB_USERNAME }}/sdn-orders-agent:latest
+            docker push ${{ secrets.DOCKERHUB_USERNAME }}/sdn-payments-agent:latest
+            docker push ${{ secrets.DOCKERHUB_USERNAME }}/sdn-users-agent:latest
+            docker push ${{ secrets.DOCKERHUB_USERNAME }}/sdn-notifications-agent:latest
+            echo "Successfully pushed to DockerHub"
+          else
+            echo "DockerHub credentials not available, skipping push"
+          fi
 
   deploy:
     runs-on: ubuntu-latest
