@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-client
+  namespace: sdn-project
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: web-client
+  template:
+    metadata:
+      labels:
+        app: web-client
+    spec:
+      containers:
+      - name: web-client
+        image: node:18-alpine
+        workingDir: /app
+        command: ["sh", "-c"]
+        args:
+          - |
+            npm install
+            npm run build
+            npm start
+        env:
+        - name: NODE_ENV
+          value: "production"
+        - name: NEXT_PUBLIC_MANAGER_URL
+          value: "http://snmp-manager-service:3001"
+        ports:
+        - containerPort: 3000
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "200m"
+          limits:
+            memory: "512Mi"
+            cpu: "400m"
+        volumeMounts:
+        - name: client-code
+          mountPath: /app
+      volumes:
+      - name: client-code
+        configMap:
+          name: client-code
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: web-client-service
+  namespace: sdn-project
+spec:
+  selector:
+    app: web-client
+  ports:
+  - port: 3000
+    targetPort: 3000
+  type: LoadBalancer
