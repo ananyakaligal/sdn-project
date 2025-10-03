@@ -1,2 +1,2 @@
 #!/bin/bash
-echo "480"
+echo 480
