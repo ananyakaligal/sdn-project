@@ -1,0 +1,19 @@
+{
+  "name": "sdn-project",
+  "version": "1.0.0",
+  "description": "Full-stack SNMP monitoring system",
+  "private": true,
+  "scripts": {
+    "test": "echo 'No root-level tests'",
+    "build": "echo 'Building all components'",
+    "start": "echo 'Use docker-compose or individual component scripts'"
+  },
+  "workspaces": [
+    "apps/manager",
+    "apps/client"
+  ],
+  "devDependencies": {},
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
