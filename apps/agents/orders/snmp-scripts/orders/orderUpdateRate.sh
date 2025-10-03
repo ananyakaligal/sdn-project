@@ -1,2 +1,2 @@
 #!/bin/bash
-echo "24"
+echo 24

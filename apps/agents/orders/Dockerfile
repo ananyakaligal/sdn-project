@@ -9,6 +9,9 @@ COPY snmp-scripts/ /usr/local/bin/snmp-scripts/
 
 RUN chmod +x /usr/local/bin/snmp-scripts/orders/*.sh
 
+# Ensure SNMP runtime directories exist and are owned correctly
+RUN mkdir -p /var/lib/snmp /var/run/snmp && chown -R Debian-snmp:Debian-snmp /var/lib/snmp /var/run/snmp
+
 EXPOSE 161/udp
 
-CMD ["snmpd", "-f", "-Le", "-c", "/etc/snmp/snmpd.conf"]
+CMD ["snmpd", "-f", "-Le", "-C", "-c", "/etc/snmp/snmpd.conf"]

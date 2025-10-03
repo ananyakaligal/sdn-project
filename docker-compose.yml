@@ -1,0 +1,45 @@
+services:
+  agent-inventory:
+    container_name: agent-inventory
+    build:
+      context: ./apps/agents/inventory
+    ports:
+      - "161:161/udp"
+    restart: unless-stopped
+
+  agent-orders:
+    container_name: agent-orders
+    build:
+      context: ./apps/agents/orders
+    ports:
+      - "1161:161/udp"
+    restart: unless-stopped
+
+  agent-payments:
+    container_name: agent-payments
+    build:
+      context: ./apps/agents/payments
+    ports:
+      - "2161:161/udp"
+    restart: unless-stopped
+
+  agent-users:
+    container_name: agent-users
+    build:
+      context: ./apps/agents/users
+    ports:
+      - "3161:161/udp"
+    restart: unless-stopped
+
+  agent-notifications:
+    container_name: agent-notifications
+    build:
+      context: ./apps/agents/notifications
+    ports:
+      - "4161:161/udp"
+    restart: unless-stopped
+
+networks:
+  default:
+    name: sdn-agents
+
