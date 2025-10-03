@@ -1,0 +1,144 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: inventory-agent
+  namespace: sdn-project
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: inventory-agent
+  template:
+    metadata:
+      labels:
+        app: inventory-agent
+    spec:
+      containers:
+      - name: inventory-agent
+        image: your-dockerhub-username/sdn-inventory-agent:latest
+        ports:
+        - containerPort: 161
+          protocol: UDP
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "50m"
+          limits:
+            memory: "128Mi"
+            cpu: "100m"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: orders-agent
+  namespace: sdn-project
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: orders-agent
+  template:
+    metadata:
+      labels:
+        app: orders-agent
+    spec:
+      containers:
+      - name: orders-agent
+        image: your-dockerhub-username/sdn-orders-agent:latest
+        ports:
+        - containerPort: 161
+          protocol: UDP
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "50m"
+          limits:
+            memory: "128Mi"
+            cpu: "100m"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payments-agent
+  namespace: sdn-project
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: payments-agent
+  template:
+    metadata:
+      labels:
+        app: payments-agent
+    spec:
+      containers:
+      - name: payments-agent
+        image: your-dockerhub-username/sdn-payments-agent:latest
+        ports:
+        - containerPort: 161
+          protocol: UDP
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "50m"
+          limits:
+            memory: "128Mi"
+            cpu: "100m"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: users-agent
+  namespace: sdn-project
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: users-agent
+  template:
+    metadata:
+      labels:
+        app: users-agent
+    spec:
+      containers:
+      - name: users-agent
+        image: your-dockerhub-username/sdn-users-agent:latest
+        ports:
+        - containerPort: 161
+          protocol: UDP
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "50m"
+          limits:
+            memory: "128Mi"
+            cpu: "100m"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: notifications-agent
+  namespace: sdn-project
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: notifications-agent
+  template:
+    metadata:
+      labels:
+        app: notifications-agent
+    spec:
+      containers:
+      - name: notifications-agent
+        image: your-dockerhub-username/sdn-notifications-agent:latest
+        ports:
+        - containerPort: 161
+          protocol: UDP
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "50m"
+          limits:
+            memory: "128Mi"
+            cpu: "100m"
