@@ -1,0 +1,233 @@
+
+SDN-PROJECT-MIB DEFINITIONS ::= BEGIN
+
+IMPORTS
+    MODULE-IDENTITY, OBJECT-IDENTITY, OBJECT-TYPE, Unsigned32
+        FROM SNMPv2-SMI
+    enterprises
+        FROM SNMPv2-SMI;
+
+sdnProject MODULE-IDENTITY
+    LAST-UPDATED "202510090000Z"
+    ORGANIZATION "sdn-project"
+    CONTACT-INFO
+        "email: sdn-project@example.com"
+    DESCRIPTION
+        "The root MIB module for the sdn-project."
+    REVISION "202510090000Z"
+    DESCRIPTION
+        "Initial revision."
+    ::= { enterprises 99999 }
+
+-- Top-level OID assignments
+sdnProjectAgents OBJECT-IDENTITY
+    STATUS      current
+    DESCRIPTION "The base OID for all agents in the sdn-project."
+    ::= { sdnProject 1 }
+
+-- Inventory agent subtree
+inventoryAgent OBJECT-IDENTITY
+    STATUS      current
+    DESCRIPTION "OID subtree for the inventory agent."
+    ::= { sdnProjectAgents 1 }
+
+stockLevel OBJECT-TYPE
+    SYNTAX      Unsigned32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "The current total stock level of all items."
+    ::= { inventoryAgent 1 }
+
+stockOutEvents OBJECT-TYPE
+    SYNTAX      Unsigned32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "The number of stock-out events that have occurred."
+    ::= { inventoryAgent 2 }
+
+avgStockQueryMs OBJECT-TYPE
+    SYNTAX      Unsigned32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Average stock query response time in ms."
+    ::= { inventoryAgent 3 }
+
+stockUpdateRate OBJECT-TYPE
+    SYNTAX      Unsigned32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Stock update rate."
+    ::= { inventoryAgent 4 }
+
+inventorySyncErrors OBJECT-TYPE
+    SYNTAX      Unsigned32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Inventory sync error count."
+    ::= { inventoryAgent 5 }
+
+-- Orders agent subtree
+ordersAgent OBJECT-IDENTITY
+    STATUS      current
+    DESCRIPTION "OID subtree for the orders agent."
+    ::= { sdnProjectAgents 2 }
+
+activeOrders OBJECT-TYPE
+    SYNTAX      Unsigned32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Number of active orders."
+    ::= { ordersAgent 1 }
+
+ordersPerMin OBJECT-TYPE
+    SYNTAX      Unsigned32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Orders processed per minute."
+    ::= { ordersAgent 2 }
+
+orderUpdateRate OBJECT-TYPE
+    SYNTAX      Unsigned32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Order update rate."
+    ::= { ordersAgent 3 }
+
+orderFailureRate OBJECT-TYPE
+    SYNTAX      Unsigned32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Order failure rate."
+    ::= { ordersAgent 4 }
+
+avgOrderProcessingMs OBJECT-TYPE
+    SYNTAX      Unsigned32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Average order processing time in ms."
+    ::= { ordersAgent 5 }
+
+-- Payments agent subtree
+paymentsAgent OBJECT-IDENTITY
+    STATUS      current
+    DESCRIPTION "OID subtree for the payments agent."
+    ::= { sdnProjectAgents 3 }
+
+activePaymentSessions OBJECT-TYPE
+    SYNTAX      Unsigned32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Number of active payment sessions."
+    ::= { paymentsAgent 1 }
+
+paymentsPerMin OBJECT-TYPE
+    SYNTAX      Unsigned32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Payments processed per minute."
+    ::= { paymentsAgent 2 }
+
+paymentFailureRate OBJECT-TYPE
+    SYNTAX      Unsigned32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Rate of failed payments."
+    ::= { paymentsAgent 3 }
+
+refundRate OBJECT-TYPE
+    SYNTAX      Unsigned32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Refund rate."
+    ::= { paymentsAgent 4 }
+
+avgPaymentProcessingMs OBJECT-TYPE
+    SYNTAX      Unsigned32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Average payment processing time in ms."
+    ::= { paymentsAgent 5 }
+
+-- Users agent subtree
+usersAgent OBJECT-IDENTITY
+    STATUS      current
+    DESCRIPTION "OID subtree for the users agent."
+    ::= { sdnProjectAgents 4 }
+
+activeUsers OBJECT-TYPE
+    SYNTAX      Unsigned32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Number of active users."
+    ::= { usersAgent 1 }
+
+authSuccessRate OBJECT-TYPE
+    SYNTAX      Unsigned32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Authentication success rate."
+    ::= { usersAgent 2 }
+
+authFailureRate OBJECT-TYPE
+    SYNTAX      Unsigned32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Authentication failure rate."
+    ::= { usersAgent 3 }
+
+profileUpdateRate OBJECT-TYPE
+    SYNTAX      Unsigned32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Profile update rate."
+    ::= { usersAgent 4 }
+
+avgLoginResponseMs OBJECT-TYPE
+    SYNTAX      Unsigned32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Average login response time in ms."
+    ::= { usersAgent 5 }
+
+-- Notifications agent subtree
+notificationsAgent OBJECT-IDENTITY
+    STATUS      current
+    DESCRIPTION "OID subtree for the notifications agent."
+    ::= { sdnProjectAgents 5 }
+
+notificationsPerMin OBJECT-TYPE
+    SYNTAX      Unsigned32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Notifications sent per minute."
+    ::= { notificationsAgent 1 }
+
+activeQueues OBJECT-TYPE
+    SYNTAX      Unsigned32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Number of active notification queues."
+    ::= { notificationsAgent 2 }
+
+notificationFailureRate OBJECT-TYPE
+    SYNTAX      Unsigned32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Notification failure rate."
+    ::= { notificationsAgent 3 }
+
+retryCount OBJECT-TYPE
+    SYNTAX      Unsigned32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Notification retry count."
+    ::= { notificationsAgent 4 }
+
+avgDeliveryMs OBJECT-TYPE
+    SYNTAX      Unsigned32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Average notification delivery time in ms."
+    ::= { notificationsAgent 5 }
+
+END

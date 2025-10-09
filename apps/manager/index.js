@@ -7,7 +7,6 @@ const execAsync = promisify(exec);
 const app = express();
 const PORT = 3001;
 
-// Agent port mapping
 const AGENT_PORTS = {
   inventory: 161,
   orders: 1161,
@@ -16,10 +15,9 @@ const AGENT_PORTS = {
   notifications: 4161
 };
 
+
 app.use(cors());
 app.use(express.json());
-
-// (no extra helpers needed)
 
 function buildExtendIndexFromName(name) {
   const bytes = Buffer.from(name, 'utf8');
@@ -27,13 +25,12 @@ function buildExtendIndexFromName(name) {
   return parts.join('.');
 }
 
+
 function buildExtendValueOid(name) {
-  // NET-SNMP-EXTEND-MIB::nsExtendOutput1Line → 1.3.6.1.4.1.8072.1.3.2.3.1.1
-  const baseOid = '1.3.6.1.4.1.8072.1.3.2.3.1.1';
+  const baseOid = '1.3.6.1.4.1.8072.1.3.2.3.1.1'; // nsExtendOutput1Line OID
   return `${baseOid}.${buildExtendIndexFromName(name)}`;
 }
 
-// GET /metrics?service=inventory&key=stockOutEvents
 app.get('/metrics', async (req, res) => {
   const { service, key } = req.query;
   
@@ -76,7 +73,6 @@ app.get('/metrics', async (req, res) => {
   }
 });
 
-// GET /health
 app.get('/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });

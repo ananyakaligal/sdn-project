@@ -1,2 +1,2 @@
 #!/bin/bash
-echo 9
+echo $((1 + RANDOM % 40))

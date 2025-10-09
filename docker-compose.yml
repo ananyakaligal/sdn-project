@@ -2,7 +2,8 @@ services:
   agent-inventory:
     container_name: agent-inventory
     build:
-      context: ./apps/agents/inventory
+      context: .
+      dockerfile: apps/agents/inventory/Dockerfile
     ports:
       - "161:161/udp"
     restart: unless-stopped
@@ -10,7 +11,8 @@ services:
   agent-orders:
     container_name: agent-orders
     build:
-      context: ./apps/agents/orders
+      context: .
+      dockerfile: apps/agents/orders/Dockerfile
     ports:
       - "1161:161/udp"
     restart: unless-stopped
@@ -18,7 +20,8 @@ services:
   agent-payments:
     container_name: agent-payments
     build:
-      context: ./apps/agents/payments
+      context: .
+      dockerfile: apps/agents/payments/Dockerfile
     ports:
       - "2161:161/udp"
     restart: unless-stopped
@@ -26,7 +29,8 @@ services:
   agent-users:
     container_name: agent-users
     build:
-      context: ./apps/agents/users
+      context: .
+      dockerfile: apps/agents/users/Dockerfile
     ports:
       - "3161:161/udp"
     restart: unless-stopped
@@ -34,7 +38,8 @@ services:
   agent-notifications:
     container_name: agent-notifications
     build:
-      context: ./apps/agents/notifications
+      context: .
+      dockerfile: apps/agents/notifications/Dockerfile
     ports:
       - "4161:161/udp"
     restart: unless-stopped

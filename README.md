@@ -44,7 +44,10 @@ Open http://localhost:3000 to access the dashboard.
 **Users**: activeUsers, authSuccessRate, authFailureRate, profileUpdateRate, avgLoginResponseMs
 **Notifications**: notificationsPerMin, activeQueues, notificationFailureRate, retryCount, avgDeliveryMs
 
-## Configuration
+
+## SNMP MIB Configuration
+
+All SNMP agents use a single shared MIB file: `mibs/SDN-PROJECT-MIB.mib`. If you update the MIB, ensure all agents reference this file in their SNMP configuration (e.g., via Dockerfile or snmpd.conf). Do not duplicate the MIB in agent folders.
 
 Set `NEXT_PUBLIC_MANAGER_URL` in `apps/client/.env.local` if manager API is not on localhost:3001.
 

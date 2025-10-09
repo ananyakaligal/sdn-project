@@ -1,2 +1,2 @@
 #!/bin/bash
-echo 33
+echo $((1 + RANDOM % 60))
