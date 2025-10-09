@@ -1,0 +1,74 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: inventory-agent-service
+  namespace: sdn-project
+spec:
+  type: NodePort
+  selector:
+    app: inventory-agent
+  ports:
+  - protocol: UDP
+    port: 161
+    targetPort: 161
+    nodePort: 30161
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: orders-agent-service
+  namespace: sdn-project
+spec:
+  type: NodePort
+  selector:
+    app: orders-agent
+  ports:
+  - protocol: UDP
+    port: 161
+    targetPort: 161
+    nodePort: 31161
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: payments-agent-service
+  namespace: sdn-project
+spec:
+  type: NodePort
+  selector:
+    app: payments-agent
+  ports:
+  - protocol: UDP
+    port: 161
+    targetPort: 161
+    nodePort: 32161
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: users-agent-service
+  namespace: sdn-project
+spec:
+  type: NodePort
+  selector:
+    app: users-agent
+  ports:
+  - protocol: UDP
+    port: 161
+    targetPort: 161
+    nodePort: 30261
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: notifications-agent-service
+  namespace: sdn-project
+spec:
+  type: NodePort
+  selector:
+    app: notifications-agent
+  ports:
+  - protocol: UDP
+    port: 161
+    targetPort: 161
+    nodePort: 30361
