@@ -43,7 +43,7 @@ const SERVICE_KEYS: Record<Service, string[]> = {
   ],
 };
 
-const API_BASE = process.env.NEXT_PUBLIC_MANAGER_URL || "http://localhost:3001";
+const API_BASE = "/api/manager";
 
 export default function Home() {
   const [service, setService] = useState<Service>("inventory");
@@ -59,7 +59,7 @@ export default function Home() {
     setError(null);
     setData(null);
     try {
-      const url = `${API_BASE}/metrics?service=${encodeURIComponent(service)}&key=${encodeURIComponent(key)}`;
+  const url = `${API_BASE}?service=${encodeURIComponent(service)}&key=${encodeURIComponent(key)}`;
       const res = await fetch(url);
       const json = await res.json();
       if (!res.ok) throw new Error(json.error || "Request failed");
