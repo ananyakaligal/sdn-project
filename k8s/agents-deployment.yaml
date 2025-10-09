@@ -15,8 +15,8 @@ spec:
     spec:
       containers:
       - name: inventory-agent
-        image: sdn-project-agent-inventory:latest
-        imagePullPolicy: Never
+        image: ananyakaligal/sdn-agent-inventory:latest
+        imagePullPolicy: Always
         ports:
         - containerPort: 161
           protocol: UDP
@@ -45,8 +45,8 @@ spec:
     spec:
       containers:
       - name: orders-agent
-        image: sdn-project-agent-orders:latest
-        imagePullPolicy: Never
+        image: ananyakaligal/sdn-agent-orders:latest
+        imagePullPolicy: Always
         ports:
         - containerPort: 161
           protocol: UDP
@@ -75,8 +75,8 @@ spec:
     spec:
       containers:
       - name: payments-agent
-        image: sdn-project-agent-payments:latest
-        imagePullPolicy: Never
+        image: ananyakaligal/sdn-agent-payments:latest
+        imagePullPolicy: Always
         ports:
         - containerPort: 161
           protocol: UDP
@@ -105,8 +105,8 @@ spec:
     spec:
       containers:
       - name: users-agent
-        image: sdn-project-agent-users:latest
-        imagePullPolicy: Never
+        image: ananyakaligal/sdn-agent-users:latest
+        imagePullPolicy: Always
         ports:
         - containerPort: 161
           protocol: UDP
@@ -135,8 +135,8 @@ spec:
     spec:
       containers:
       - name: notifications-agent
-        image: sdn-project-agent-notifications:latest
-        imagePullPolicy: Never
+        image: ananyakaligal/sdn-agent-notifications:latest
+        imagePullPolicy: Always
         ports:
         - containerPort: 161
           protocol: UDP

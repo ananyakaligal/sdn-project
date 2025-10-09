@@ -15,8 +15,8 @@ spec:
     spec:
       containers:
       - name: web-client
-        image: sdn-portal:latest
-        imagePullPolicy: Never
+        image: ananyakaligal/sdn-portal:latest
+        imagePullPolicy: Always
         env:
         - name: NODE_ENV
           value: "production"
