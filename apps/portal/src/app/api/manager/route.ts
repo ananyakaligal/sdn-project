@@ -1,48 +1,42 @@
-const express = require('express');
-const cors = require('cors');
-const { exec } = require('child_process');
-const { promisify } = require('util');
+import { NextRequest, NextResponse } from 'next/server';
+import { exec } from 'child_process';
+import { promisify } from 'util';
 
 const execAsync = promisify(exec);
-const app = express();
-const PORT = 3001;
 
 const AGENT_PORTS = {
   inventory: 161,
   orders: 1161,
   payments: 2161,
   users: 3161,
-  notifications: 4161
+  notifications: 4161,
 };
 
-
-app.use(cors());
-app.use(express.json());
-
-function buildExtendIndexFromName(name) {
+function buildExtendIndexFromName(name: string) {
   const bytes = Buffer.from(name, 'utf8');
   const parts = [bytes.length, ...bytes];
   return parts.join('.');
 }
 
-
-function buildExtendValueOid(name) {
+function buildExtendValueOid(name: string) {
   const baseOid = '1.3.6.1.4.1.8072.1.3.2.3.1.1'; // nsExtendOutput1Line OID
   return `${baseOid}.${buildExtendIndexFromName(name)}`;
 }
 
-app.get('/metrics', async (req, res) => {
-  const { service, key } = req.query;
-  
+export async function GET(req: NextRequest) {
+  const { searchParams } = new URL(req.url);
+  const service = searchParams.get('service');
+  const key = searchParams.get('key');
+
   if (!service || !key) {
-    return res.status(400).json({ error: 'Missing service or key parameter' });
+    return NextResponse.json({ error: 'Missing service or key parameter' }, { status: 400 });
   }
-  
-  const port = AGENT_PORTS[service];
+
+  const port = AGENT_PORTS[service as keyof typeof AGENT_PORTS];
   if (!port) {
-    return res.status(400).json({ error: `Unknown service: ${service}` });
+    return NextResponse.json({ error: `Unknown service: ${service}` }, { status: 400 });
   }
-  
+
   const containerName = `agent-${service}`;
 
   try {
@@ -58,26 +52,17 @@ app.get('/metrics', async (req, res) => {
     else if (mInteger) value = mInteger[1];
 
     if (value === null || value === undefined) {
-      return res.status(404).json({ error: `Value not found for ${name}` });
+      return NextResponse.json({ error: `Value not found for ${name}` }, { status: 404 });
     }
 
-    res.json({
+    return NextResponse.json({
       service,
       key,
       value: Number.isNaN(parseInt(value, 10)) ? value : parseInt(value, 10),
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     });
   } catch (error) {
     console.error('Error querying metrics:', error);
-    res.status(500).json({ error: 'Failed to query metrics' });
+    return NextResponse.json({ error: 'Failed to query metrics' }, { status: 500 });
   }
-});
-
-app.get('/health', (req, res) => {
-  res.json({ status: 'ok', timestamp: new Date().toISOString() });
-});
-
-app.listen(PORT, () => {
-  console.log(`SNMP Manager API running on port ${PORT}`);
-  console.log(`Available services: ${Object.keys(AGENT_PORTS).join(', ')}`);
-});
+}
