@@ -1,2 +1,2 @@
 #!/bin/bash
-echo 90
+echo $((50 + RANDOM % 100))

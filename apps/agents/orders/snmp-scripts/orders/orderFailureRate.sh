@@ -1,2 +1,2 @@
 #!/bin/bash
-echo 1
+echo $((RANDOM % 10))
