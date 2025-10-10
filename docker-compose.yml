@@ -48,3 +48,20 @@ networks:
   default:
     name: sdn-agents
 
+  portal:
+    container_name: portal
+    build:
+      context: .
+      dockerfile: apps/portal/Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+    depends_on:
+      - agent-inventory
+      - agent-orders
+      - agent-payments
+      - agent-users
+      - agent-notifications
+    restart: unless-stopped
+
