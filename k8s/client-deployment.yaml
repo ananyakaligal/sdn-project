@@ -16,6 +16,21 @@ spec:
       containers:
       - name: web-client
         image: ananyakaligal/sdn-portal:latest
+        imagePullPolicy: Always
+        env:
+        - name: NODE_ENV
+          value: "production"
+        - name: NEXT_PUBLIC_MANAGER_URL
+          value: "http://snmp-manager-service:3001"
+        ports:
+        - containerPort: 3000
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "200m"
+          limits:
+            memory: "512Mi"
+            cpu: "400m"
 ---
 apiVersion: v1
 kind: Service

@@ -4,12 +4,13 @@ import { promisify } from 'util';
 
 const execAsync = promisify(exec);
 
-const AGENT_PORTS = {
-  inventory: 161,
-  orders: 1161,
-  payments: 2161,
-  users: 3161,
-  notifications: 4161,
+// In Kubernetes, agents are reached via service DNS names
+const AGENT_SERVICES: { [key: string]: string } = {
+  inventory: 'inventory-agent-service',
+  orders: 'orders-agent-service',
+  payments: 'payments-agent-service',
+  users: 'users-agent-service',
+  notifications: 'notifications-agent-service'
 };
 
 function buildExtendIndexFromName(name: string) {
@@ -19,7 +20,7 @@ function buildExtendIndexFromName(name: string) {
 }
 
 function buildExtendValueOid(name: string) {
-  const baseOid = '1.3.6.1.4.1.8072.1.3.2.3.1.1'; // nsExtendOutput1Line OID
+  const baseOid = '1.3.6.1.4.1.8072.1.3.2.3.1.1';
   return `${baseOid}.${buildExtendIndexFromName(name)}`;
 }
 
@@ -32,17 +33,16 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: 'Missing service or key parameter' }, { status: 400 });
   }
 
-  const port = AGENT_PORTS[service as keyof typeof AGENT_PORTS];
-  if (!port) {
+  const agentService = AGENT_SERVICES[service];
+  if (!agentService) {
     return NextResponse.json({ error: `Unknown service: ${service}` }, { status: 400 });
   }
-
-  const containerName = `agent-${service}`;
 
   try {
     const name = `${service}_${key}`;
     const oid = buildExtendValueOid(name);
-    const getCmd = `docker exec ${containerName} sh -lc "snmpget -v2c -c public -m '' -On localhost ${oid}"`;
+    // Query agent via SNMP to the Kubernetes service
+    const getCmd = `snmpget -v2c -c public -m '' -On ${agentService} ${oid}`;
     const { stdout } = await execAsync(getCmd);
 
     let value = null;
@@ -63,6 +63,9 @@ export async function GET(req: NextRequest) {
     });
   } catch (error) {
     console.error('Error querying metrics:', error);
-    return NextResponse.json({ error: 'Failed to query metrics' }, { status: 500 });
+    return NextResponse.json({ 
+      error: 'Failed to query metrics',
+      details: error instanceof Error ? error.message : 'Unknown error'
+    }, { status: 500 });
   }
 }

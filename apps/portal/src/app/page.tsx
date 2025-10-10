@@ -5,6 +5,20 @@ import { useMemo, useState } from "react";
 
 type Service = "inventory" | "orders" | "payments" | "users" | "notifications";
 
+interface MetricData {
+  service: string;
+  key: string;
+  value: string | number;
+  timestamp: string;
+}
+
+interface HistoryRow {
+  ts: string;
+  service: string;
+  key: string;
+  value: string | number;
+}
+
 const SERVICE_KEYS: Record<Service, string[]> = {
   inventory: [
     "stockLevel",
@@ -51,8 +65,8 @@ export default function Home() {
   const [key, setKey] = useState<string>(keys[0]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [data, setData] = useState<any | null>(null);
-  const [history, setHistory] = useState<any[]>([]);
+  const [data, setData] = useState<MetricData | null>(null);
+  const [history, setHistory] = useState<HistoryRow[]>([]);
 
   const fetchMetric = async () => {
     setLoading(true);
@@ -70,8 +84,8 @@ export default function Home() {
         key: json.key,
         value: json.value,
       }, ...h].slice(0, 10));
-    } catch (e: any) {
-      setError(e.message || "Unknown error");
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Unknown error");
     } finally {
       setLoading(false);
     }
