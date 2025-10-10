@@ -15,35 +15,7 @@ spec:
     spec:
       containers:
       - name: web-client
-        image: node:18-alpine
-        workingDir: /app
-        command: ["sh", "-c"]
-        args:
-          - |
-            npm install
-            npm run build
-            npm start
-        env:
-        - name: NODE_ENV
-          value: "production"
-        - name: NEXT_PUBLIC_MANAGER_URL
-          value: "http://snmp-manager-service:3001"
-        ports:
-        - containerPort: 3000
-        resources:
-          requests:
-            memory: "256Mi"
-            cpu: "200m"
-          limits:
-            memory: "512Mi"
-            cpu: "400m"
-        volumeMounts:
-        - name: client-code
-          mountPath: /app
-      volumes:
-      - name: client-code
-        configMap:
-          name: client-code
+        image: ananyakaligal/sdn-portal:latest
 ---
 apiVersion: v1
 kind: Service
